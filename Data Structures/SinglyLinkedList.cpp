@@ -89,9 +89,9 @@ template <class T> class singlylinkedlist{
     {
     	unsigned long long int count = 0;
     	
-    	if (position>=length)
+    	if (position>=length || position<0)
     	{
-    		cout<<"Given position is out of bounds"<<endl;
+    		cout<<endl<<"Given position is out of bounds"<<endl;
     		return;
     	}
 
@@ -110,8 +110,12 @@ template <class T> class singlylinkedlist{
     	{
     		if (position == ++count)
     		{
-    			if(temp->next == this->tail) this->tail = temp;
-    			temp->next = temp->next->next;
+                if(temp->next == this->tail) 
+                {
+                    this->tail = temp;
+                    this->tail->next = nullptr;
+                }
+                else temp->next = temp->next->next;
     			break;
     		}
     		temp = temp->next;
@@ -126,7 +130,7 @@ template <class T> class singlylinkedlist{
     	T *ret = new T();
     	if (position>=length)
     	{
-    		cout<<"Given position is out of bounds"<<endl;
+    		cout<<endl<<"Given position is out of bounds"<<endl;
 
     		return *ret;
     	}
@@ -147,14 +151,12 @@ template <class T> class singlylinkedlist{
 int main()
 {
 	vector<int> vec = {1,2,3,4,5,6,7,8,9};
-	singlylinkedlist<vector<int>> sll;
-	for(int& it:vec)sll.push(vec);
-	for(int i = 0;i<sll.size();i++)
-	{
-		sll[i].pop_back();
-		sll[i].push_back(1211);
-		cout<<sll[i].back()<<endl;
-	}
+	singlylinkedlist<int> sll;
+	for(int& it:vec)sll.push(it);
+    for(int i = 0;i<sll.size();i++)cout<<sll[i]<<" ";
+    sll.pop(2);
+    cout<<endl;
+    for(int i = 0;i<sll.size();i++)cout<<sll[i]<<" ";
 	cout<<endl;
 
 	return 0;

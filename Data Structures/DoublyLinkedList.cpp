@@ -1,39 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <class T> class singlylinkedlistnode{
+template <class T> class doublylinkedlistnode{
     public:
     T data;
-    singlylinkedlistnode<T> *next;
-    singlylinkedlistnode()
+    doublylinkedlistnode<T> *next,*prev;
+    doublylinkedlistnode()
     {
         this->data = nullptr;
         this->next = nullptr;
+        this->prev = nullptr;
     }
     
-    singlylinkedlistnode(T node_data)
+    doublylinkedlistnode(T node_data)
     {
         this->data = node_data;
         this->next = nullptr;
+        this->prev = nullptr;
     }
 };
 
-template <class T> class singlylinkedlist{
+template <class T> class doublylinkedlist{
 
     private:
-    singlylinkedlistnode<T> *temp;
+    doublylinkedlistnode<T> *temp;
     unsigned long long int length = 0;
     
     public:
-    singlylinkedlistnode<T> *head,*tail;
+    doublylinkedlistnode<T> *head,*tail;
 
-    singlylinkedlist()
+    doublylinkedlist()
     {
         this->head = nullptr;
         this->tail = nullptr;
     }
     
-    singlylinkedlist(T node_data)
+    doublylinkedlist(T node_data)
     {
         this->head = node_data;
         this->tail = node_data;
@@ -46,10 +48,14 @@ template <class T> class singlylinkedlist{
 
     void push(T data)
     {
-        temp = new singlylinkedlistnode<T>(data);
+        temp = new doublylinkedlistnode<T>(data);
         
         if (this->head == nullptr) this->head = temp;
-        else this->tail->next = temp;
+        else 
+        {
+            temp->prev = this->tail;
+            this->tail->next = temp;
+        }
 
         this->tail = temp;
         
@@ -70,19 +76,15 @@ template <class T> class singlylinkedlist{
     	{
     		this->head = nullptr;
     		this->tail = nullptr;
+            return ;
     	}
-    	
-    	while(true)
-    	{
-    		if (temp->next == this->tail)
-    		{
-    			this->tail = temp;
-    			temp->next = nullptr;
-    			break;
-    		}
-    		temp = temp->next;
-    	}
-    	length--;
+        else 
+        {
+            this->tail->prev->next = nullptr;
+            this->tail = this->tail->prev;
+        }
+        length--;
+        
     }
 
     void pop(unsigned long long int position)
@@ -97,11 +99,14 @@ template <class T> class singlylinkedlist{
 
     	if (position == 0)
     	{
-    		this->head = this->head->next;
+            
     		if (length-- == 1)
     		{
+                this->head = nullptr;
     			this->tail = nullptr;
     		}
+            this->head->next->prev = nullptr;
+            this->head = this->head->next;
     		return ;
     	}
 
@@ -110,8 +115,16 @@ template <class T> class singlylinkedlist{
     	{
     		if (position == ++count)
     		{
-    			if(temp->next == this->tail) this->tail = temp;
-    			temp->next = temp->next->next;
+    			if(temp->next == this->tail)
+                {
+                    this->tail = temp;
+                    this->tail->next = nullptr;
+                }   
+                else 
+                {
+                    temp->next = temp->next->next;
+                    temp->next->next->prev = temp;
+                }
     			break;
     		}
     		temp = temp->next;
@@ -147,15 +160,13 @@ template <class T> class singlylinkedlist{
 int main()
 {
 	vector<int> vec = {1,2,3,4,5,6,7,8,9};
-	singlylinkedlist<vector<int>> sll;
-	for(int& it:vec)sll.push(vec);
-	for(int i = 0;i<sll.size();i++)
-	{
-		sll[i].pop_back();
-		sll[i].push_back(1211);
-		cout<<sll[i].back()<<endl;
-	}
-	cout<<endl;
+    doublylinkedlist<int> dll;
+    for(int& it:vec)dll.push(it);
+    for(int i = 0;i<dll.size();i++)cout<<dll[i]<<" ";
+    dll.pop(2);
+    cout<<endl;
+    for(int i = 0;i<dll.size();i++)cout<<dll[i]<<" ";
+    cout<<endl;
 
 	return 0;
 }
