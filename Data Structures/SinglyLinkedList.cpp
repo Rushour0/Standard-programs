@@ -21,7 +21,7 @@ template <class T> class singlylinkedlistnode{
 template <class T> class singlylinkedlist{
 
     private:
-    singlylinkedlistnode<T> *temp;
+    singlylinkedlistnode<T> *temp,*extra;
     unsigned long long int length = 0;
     
     public:
@@ -53,6 +53,46 @@ template <class T> class singlylinkedlist{
 
         this->tail = temp;
         
+        length++;
+    }
+
+    void insert(unsigned long long int position,T data)
+    {
+        unsigned long long int count = 0;
+
+        if (position>length || position<0)
+        {
+            cout<<endl<<"Given position is out of bounds"<<endl;
+            return;
+        }
+
+        extra = new singlylinkedlistnode<T>(data);
+
+        if (position == 0)
+        {
+            extra->next = this->head;
+            this->head = extra;
+            length++;
+            return;
+        }
+
+        if (position == length)
+        {
+            (*this).push(data);
+            return;
+        }
+        temp = this->head;
+    
+        while(true)
+        {
+            if (++count == position)
+            {
+                extra->next = temp->next;
+                temp->next = extra;
+                break;
+            }
+            temp = temp->next;
+        }
         length++;
     }
 
@@ -150,11 +190,11 @@ template <class T> class singlylinkedlist{
 
 int main()
 {
-	vector<int> vec = {1,2,3,4,5,6,7,8,9};
+	vector<int> vec(10000,1);
 	singlylinkedlist<int> sll;
 	for(int& it:vec)sll.push(it);
     for(int i = 0;i<sll.size();i++)cout<<sll[i]<<" ";
-    sll.pop(2);
+    sll.insert(9999,33);
     cout<<endl;
     for(int i = 0;i<sll.size();i++)cout<<sll[i]<<" ";
 	cout<<endl;

@@ -23,7 +23,7 @@ template <class T> class doublylinkedlistnode{
 template <class T> class doublylinkedlist{
 
     private:
-    doublylinkedlistnode<T> *temp;
+    doublylinkedlistnode<T> *temp,*extra;
     unsigned long long int length = 0;
     
     public:
@@ -59,6 +59,49 @@ template <class T> class doublylinkedlist{
 
         this->tail = temp;
         
+        length++;
+    }
+
+    void insert(unsigned long long int position,T data)
+    {
+        unsigned long long int count = 0;
+
+        if (position>length || position<0)
+        {
+            cout<<endl<<"Given position is out of bounds"<<endl;
+            return;
+        }
+
+        extra = new doublylinkedlistnode<T>(data);
+
+        if (position == 0)
+        {
+            this->head->prev = extra;
+            extra->next = this->head;
+            this->head = extra;
+            length++;
+            return;
+        }
+
+        if (position == length)
+        {
+            (*this).push(data);
+            return;
+        }
+        temp = this->head;
+    
+        while(true)
+        {
+            if (++count == position)
+            {
+                extra->prev = temp;
+                extra->next = temp->next;
+                temp->next->prev = extra;
+                temp->next = extra;
+                break;
+            }
+            temp = temp->next;
+        }
         length++;
     }
 
@@ -159,11 +202,11 @@ template <class T> class doublylinkedlist{
 
 int main()
 {
-	vector<int> vec = {1,2,3,4,5,6,7,8,9};
+	vector<int> vec(10000,1);
     doublylinkedlist<int> dll;
     for(int& it:vec)dll.push(it);
     for(int i = 0;i<dll.size();i++)cout<<dll[i]<<" ";
-    dll.pop(2);
+    dll.insert(9999,33);
     cout<<endl;
     for(int i = 0;i<dll.size();i++)cout<<dll[i]<<" ";
     cout<<endl;
