@@ -54,12 +54,12 @@ template <class T> class moddedstack
         free(temp);
     }
     
-    T top()
+    T& top()
     {
         return this->head->data;
     }
 
-    T bottom()
+    T& bottom()
     {
         return this->tail->data;
     }
@@ -82,15 +82,20 @@ int main()
 {
     moddedstack<int> Stack,MergeStack;
     vector<int> vec = {1,2,3,4,5,6,7,8,9};
+
     for(int& it:vec){
         Stack.push(it);
         MergeStack.push(-it);
     }
+
     Stack.mergestack(MergeStack);
+
     cout<<Stack.top()<<" "<<Stack.bottom()<<endl;
+    
     while (!Stack.empty()){
         cout<<Stack.top()<<" ";
         Stack.pop();
-    } 
+    }
+     
     return 0;
 }

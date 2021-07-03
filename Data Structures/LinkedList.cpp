@@ -1,46 +1,161 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-template <typename T> class linkedlistnode{
+template <class T> class singlylinkedlistnode{
     public:
     T data;
-    linkedlistnode *next;
-    linkedlistnode()
+    singlylinkedlistnode<T> *next;
+    singlylinkedlistnode()
     {
         this->data = nullptr;
         this->next = nullptr;
     }
     
-    linkedlistnode(T node_data)
+    singlylinkedlistnode(T node_data)
     {
         this->data = node_data;
         this->next = nullptr;
     }
 };
 
-template <typename T> class linkedlist{
+template <class T> class singlylinkedlist{
+
     private:
-    linkedlistnode *temp;
+    singlylinkedlistnode<T> *temp;
+    unsigned long long int length = 0;
     
     public:
-    linkedlistnode *head,*tail;
-    linkedlist()
+    singlylinkedlistnode<T> *head,*tail;
+
+    singlylinkedlist()
     {
         this->head = nullptr;
         this->tail = nullptr;
     }
     
-    linkedlistnode(T node_data)
+    singlylinkedlist(T node_data)
     {
         this->head = node_data;
         this->tail = node_data;
     }
     
+    unsigned long long int size()
+    {
+    	return length;
+    }
+
     void push(T data)
     {
-        temp = new linkedlistnode(data);
-        this->tail->next = temp;
+        temp = new singlylinkedlistnode<T>(data);
+        
+        if (this->head == nullptr) this->head = temp;
+        else this->tail->next = temp;
+
         this->tail = temp;
+        
+        length++;
+    }
+
+    void pop()
+    {
+    	temp = this->head;
+
+    	if (temp == NULL)
+    	{
+    		cout<<"Linked List is empty"<<endl;
+    		return ;	
+    	}
+
+    	if (temp == this->tail)
+    	{
+    		this->head = nullptr;
+    		this->tail = nullptr;
+    	}
+    	
+    	while(true)
+    	{
+    		if (temp->next == this->tail)
+    		{
+    			this->tail = temp;
+    			temp->next = nullptr;
+    			break;
+    		}
+    		temp = temp->next;
+    	}
+    	length--;
+    }
+
+    void pop(unsigned long long int position)
+    {
+    	unsigned long long int count = 0;
+    	
+    	if (position>=length)
+    	{
+    		cout<<"Given position is out of bounds"<<endl;
+    		return;
+    	}
+
+    	if (position == 0)
+    	{
+    		this->head = this->head->next;
+    		if (length-- == 1)
+    		{
+    			this->tail = nullptr;
+    		}
+    		return ;
+    	}
+
+    	temp = this->head;
+    	while (true)
+    	{
+    		if (position == ++count)
+    		{
+    			if(temp->next == this->tail) this->tail = temp;
+    			temp->next = temp->next->next;
+    			break;
+    		}
+    		temp = temp->next;
+    	}
+    	length--;
+    }
+
+    T& operator[](unsigned long long int position)
+    {
+    	unsigned long long int count = 0;
+    	
+    	T *ret = new T();
+    	if (position>=length)
+    	{
+    		cout<<"Given position is out of bounds"<<endl;
+
+    		return *ret;
+    	}
+
+    	temp = this->head;
+    	while(true)
+    	{
+    		if (count++ == position)
+    		{
+    			return temp->data;;
+    		}
+    		temp = temp->next;
+    	}
     }
 };
 
+
+int main()
+{
+	vector<int> vec = {1,2,3,4,5,6,7,8,9};
+	singlylinkedlist<vector<int>> sll;
+	for(int& it:vec)sll.push(vec);
+	for(int i = 0;i<sll.size();i++)
+	{
+		sll[i].pop_back();
+		sll[i].push_back(1211);
+		cout<<sll[i].back()<<endl;
+	}
+	cout<<endl;
+
+	return 0;
+}
