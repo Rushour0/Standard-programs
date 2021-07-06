@@ -7,7 +7,6 @@ template <class T> class doublylinkedlistnode{
     doublylinkedlistnode<T> *next,*prev;
     doublylinkedlistnode()
     {
-        this->data = nullptr;
         this->next = nullptr;
         this->prev = nullptr;
     }
@@ -46,7 +45,7 @@ template <class T> class doublylinkedlist{
     	return length;
     }
 
-    void push(T data)
+    doublylinkedlistnode<T>* push(T data)
     {
         temp = new doublylinkedlistnode<T>(data);
         
@@ -60,33 +59,33 @@ template <class T> class doublylinkedlist{
         this->tail = temp;
         
         length++;
+        return temp;
     }
 
-    void insert(unsigned long long int position,T data)
+    doublylinkedlistnode<T>* insert(unsigned long long int position,T data)
     {
         unsigned long long int count = 0;
 
+        extra = new doublylinkedlistnode<T>(data);
         if (position>length || position<0)
         {
             cout<<endl<<"Given position is out of bounds"<<endl;
-            return;
+            return extra;
         }
 
-        extra = new doublylinkedlistnode<T>(data);
-
-        if (position == 0)
+        else if (position == 0)
         {
             this->head->prev = extra;
             extra->next = this->head;
             this->head = extra;
             length++;
-            return;
+            return extra;
         }
 
-        if (position == length)
+        else if (position == length)
         {
             (*this).push(data);
-            return;
+            return extra;
         }
         temp = this->head;
     
@@ -103,6 +102,7 @@ template <class T> class doublylinkedlist{
             temp = temp->next;
         }
         length++;
+        return extra;
     }
 
     void pop()
@@ -175,6 +175,12 @@ template <class T> class doublylinkedlist{
     	length--;
     }
 
+    void popNode(doublylinkedlistnode<T> *node)
+    {
+        node->next->prev = node->prev;
+        node->prev->next = node->next;
+    }
+
     T& operator[](unsigned long long int position)
     {
     	unsigned long long int count = 0;
@@ -202,12 +208,17 @@ template <class T> class doublylinkedlist{
 
 int main()
 {
-	vector<int> vec(10000,1);
+	vector<int> vec(3,1);
     doublylinkedlist<int> dll;
-    for(int& it:vec)dll.push(it);
+    doublylinkedlistnode<int> *temp;
+    for(int& it:vec) dll.push(it);
     for(int i = 0;i<dll.size();i++)cout<<dll[i]<<" ";
-    dll.insert(9999,33);
+    temp = dll.insert(2,33);
     cout<<endl;
+    cout<<temp->data<<endl;
+    for(int i = 0;i<dll.size();i++)cout<<dll[i]<<" ";
+    cout<<endl;
+    dll.popNode(temp);
     for(int i = 0;i<dll.size();i++)cout<<dll[i]<<" ";
     cout<<endl;
 
