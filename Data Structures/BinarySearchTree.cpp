@@ -36,7 +36,6 @@ template <class T>class binarysearchtree{
 
 	void insertNode(binarysearchtreenode<T> *node)
 	{
-		data = node->data;
 		if (this->root == nullptr)
 		{
 			this->root = node;
@@ -214,6 +213,7 @@ template <class T>class binarysearchtree{
 					}
 					else temp->root->right = nullptr;
 				}
+				break;
 			}
 		}
 	}
@@ -226,6 +226,10 @@ int main()
 	vector<int> vec = {-1,-2,-32,3,4,1,5,67,2,57,38};
 	binarysearchtree<int> bst;
 	for(int& it:vec) bst.insert(it);
+	bst.del(3);
+	bst.del(57);
+	bst.del(67);
+	bst.del(-2);
 	bst.del(-32);
 	cout<<bst.min()<<" "<<bst.max();
 	
