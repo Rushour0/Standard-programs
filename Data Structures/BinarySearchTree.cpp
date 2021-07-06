@@ -34,6 +34,44 @@ template <class T>class binarysearchtree{
 		this->root = nullptr;
 	}
 
+	void insertNode(binarysearchtreenode<T> *node)
+	{
+		data = node->data;
+		if (this->root == nullptr)
+		{
+			this->root = node;
+			return ;
+		}
+		else
+		{
+			extra = this->root;
+			while(true)
+			{
+				if (extra->data < node->data)
+				{
+					if (extra->right == nullptr) 
+					{
+						node->root = extra;
+						extra->right = node;
+						break;
+					}
+					else extra = extra->right;
+				}
+				else 
+				{
+					if (extra->left == nullptr) 
+					{
+						node->root = extra;
+						extra->left = node;
+						break;
+					}
+					else extra = extra->left;
+				}
+			}
+		}
+		return ;
+	}
+
 	binarysearchtreenode<T>* insert(T data)
 	{
 		temp = new binarysearchtreenode<T>(data);
@@ -131,57 +169,7 @@ template <class T>class binarysearchtree{
 		{
 			if (temp->data < value) temp = temp->right;
 			else if (temp->data > value) temp = temp->left;
-			else if (temp->data == value)
-			{
-				if (temp->root->left == temp)
-				{
-					if (temp->left != nullptr)
-					{
-						temp->root->left = temp->left;
-						temp->left->root = temp->root;
-						extra = temp->left;
-						if (extra == NULL) break;
-						if(temp->right == NULL )break;
-						while (extra->right != nullptr) extra = extra->right;
-						extra->right = temp->right;
-						temp->right->root = extra;
-					}
-					else if (temp->right != nullptr)
-					{
-						temp->root->left = temp->right;
-						temp->right->root = temp->root;
-					}
-					else
-					{
-						temp->root->left = nullptr;
-					}
-
-				}
-				else if (temp->root->right == temp)
-				{
-					if (temp->left != nullptr)
-					{
-						temp->root->right = temp->left;
-						temp->left->root = temp->root;
-						extra = temp->left;
-						if (extra == NULL) break;
-						while (extra->right != nullptr) extra = extra->right;
-						extra->right = temp->right;
-						if(temp->right == NULL )break;
-						temp->right->root = extra;
-					}
-					else if (temp->right != nullptr)
-					{
-						temp->root->left = temp->right;
-						temp->right->root = temp->root;
-					}
-					else
-					{
-						temp->root->left = nullptr;
-					}
-				}
-				break;
-			}
+			
 		}
 	}
 	
