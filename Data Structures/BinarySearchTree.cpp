@@ -169,7 +169,52 @@ template <class T>class binarysearchtree{
 		{
 			if (temp->data < value) temp = temp->right;
 			else if (temp->data > value) temp = temp->left;
-			
+			else if (temp->data == value)
+			{
+				if (temp->root->left == temp)
+				{	
+					if (temp->left != nullptr)
+					{
+						temp->root->left = temp->left;
+						temp->left->root = temp->root;
+						if (temp->right != nullptr)
+						{
+							extra = temp->left;
+							while(extra->right != nullptr) extra = extra->right;
+							temp->right->root = extra;
+							extra->right = temp->right;
+						}
+					}
+					else if(temp->right != nullptr)
+					{
+						temp->root->left = temp->right;
+						temp->right->root = temp->root;
+					}
+					else temp->root->left = nullptr;
+				}
+
+				else if (temp->root->right == temp)
+				{	
+					if (temp->left != nullptr)
+					{
+						temp->root->right = temp->left;
+						temp->left->root = temp->root;
+						if (temp->right != nullptr)
+						{
+							extra = temp->left;
+							while(extra->right != nullptr) extra = extra->right;
+							temp->right->root = extra;
+							extra->right = temp->right;
+						}
+					}
+					else if(temp->right != nullptr)
+					{
+						temp->root->right = temp->right;
+						temp->right->root = temp->root;
+					}
+					else temp->root->right = nullptr;
+				}
+			}
 		}
 	}
 	
@@ -182,7 +227,6 @@ int main()
 	binarysearchtree<int> bst;
 	for(int& it:vec) bst.insert(it);
 	bst.del(-32);
-	//cout<<(*temp).data;
 	cout<<bst.min()<<" "<<bst.max();
 	
 	return 0;
