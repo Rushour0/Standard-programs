@@ -439,9 +439,8 @@ template <class T>class binarysearchtree{
 	// Levelorder Iterative approach
 	void levelorderIterative()
 	{
-		temp = this->root;
 		queue<binarysearchtreenode<T>*> Queue;
-		Queue.push(temp);
+		Queue.push(this->root);
 		while(!Queue.empty())
 		{
 			temp = Queue.front();
@@ -455,12 +454,19 @@ template <class T>class binarysearchtree{
 	// Levelorder Recursive approach
 	void levelorderRecursive()
 	{
-		levelorderRecursive(this->root);
+		queue<binarysearchtreenode<T>*> Queue;
+		Queue.push(this->root);
+		levelorderRecursive(Queue);
 	}
 
-	void levelorderRecursive(binarysearchtreenode<T> *root)
+	void levelorderRecursive(queue<binarysearchtreenode<T>*>& Queue)
 	{
-
+		temp = Queue.front();
+		cout<<temp->data<<" ";
+		Queue.pop();
+		if (temp->left != nullptr) Queue.push(temp->left);
+		if (temp->right != nullptr) Queue.push(temp->right);
+		if (!Queue.empty()) levelorderRecursive(Queue);
 	}
 };
 
@@ -486,6 +492,8 @@ int main()
 	bst.postorderRecursive();
 	line
 	bst.levelorderIterative();
+	line
+	bst.levelorderRecursive();
 	
 	return 0;
 }
