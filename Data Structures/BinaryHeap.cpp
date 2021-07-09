@@ -74,14 +74,14 @@ template <class T> class binaryheap
 	{
 		heap_size = 0;
 		heapismax = 1; 
-		cout<<"heap type is : "<<(!heaptype ? "Min" : "Max") <<endl; 
+		cout<<"Heap type is : "<<(!heapismax ? "Min" : "Max") <<"\n\n"; 
 	}
 
 	binaryheapnode<T>* push(T data)
 	{
 		heap_size++;
 		temp = new binaryheapnode<T>(data);
-		cout<<"INITIAL : ";this->all();
+		cout<<"START : ";this->all();
 		if (heaparray.size() == 0) 
 		{
 			heaparray.push_back(*temp);
@@ -103,6 +103,7 @@ template <class T> class binaryheap
 			}
 		}
 		cout<<"FINAL : ";this->all();
+		cout<<endl;
 		return temp;
 	}
 
@@ -129,6 +130,11 @@ template <class T> class binaryheap
 		return val;
 	}
 
+	T peek()
+	{
+		return heaparray[0].data;
+	}
+	
 	void all()
 	{
 		for(auto& iter: heaparray)cout<<iter.data<<" ";
@@ -139,11 +145,10 @@ template <class T> class binaryheap
 
 int main()
 {
-	cout<<"Hello World!\n";
 	vector<int> values = {5,3,9,1,6,8};
-	binaryheap<int> heap();
+	binaryheap<int> heap;
 	for(int& it:values)heap.push(it);
-	cout<<heap.pop()<<endl;
-	heap.all();
+	cout<<"First Element : "<<heap.peek()<<endl;
+	cout<<"All Elements : ";heap.all();
 	return 0;
 }
