@@ -68,26 +68,26 @@ template <class T> class avltree
 
 	void ll_rotate(avltreenode<T> *node)
 	{
-		
+		right_rotate(node);
 	}	
 
 	void rr_rotate(avltreenode<T> *node)
 	{
-
+		left_rotate(node);
 	}
 
 	void lr_rotate(avltreenode<T> *node)
 	{
-		temp = node->right;
-		rr_rotate(node);
-		ll_rotate(temp);
+		avltreenode<T> *first = node->right;
+		left_rotate(first);
+		right_rotate(node);
 	}
 	
 	void rl_rotate(avltreenode<T> *node)
 	{
-		temp = node->left;
-		ll_rotate(node);
-		rr_rotate(temp);
+		avltreenode<T> *first = node->left;
+		right_rotate(first);
+		left_rotate(node);
 	}
 
 	// Check for rotations
@@ -106,31 +106,32 @@ template <class T> class avltree
 			{
 				temp = node;
 				nodeStack.pop();
-				cout<<temp->right->data<<" "<<(nodeStack.top())->data;
-				if (temp->right == nodeStack.top())
+				if (temp->right != nullptr && temp->right == nodeStack.top())
 				{
-					extra = nodeStack.top();
 					nodeStack.pop();
-					if (temp->right->right == nodeStack.top())
+					if (temp->right->right != nullptr && temp->right->right == nodeStack.top())
 					{
 						rr_rotate(temp);
 					}
 					else
 					{
-						rl_rotate(temp);
+						right_rotate(temp->right);
+						left_rotate(temp);
+						//rl_rotate(temp);
 					}
 				}
 				else
 				{
 					extra = nodeStack.top();
 					nodeStack.pop();
-					if (temp->left->left == nodeStack.top())
+					if (temp->left->left != nullptr && temp->left->left == nodeStack.top())
 					{
 						ll_rotate(temp);
 					}
 					else
 					{
-						lr_rotate(temp);
+						left_rotate(temp->left);
+						right_rotate(temp);
 					}
 				}
 				break;
@@ -595,5 +596,20 @@ int main()
 	temp = avl.findNode(-32);
 	avl.delNode(temp);
 	cout<<avl.minValue()<<" "<<avl.maxValue()<<endl;
+	avl.inorderIterative();
+	line
+	avl.inorderRecursive();
+	line
+	avl.preorderIterative();
+	line
+	avl.preorderRecursive();
+	line
+	avl.postorderIterative();
+	line
+	avl.postorderRecursive();
+	line
+	avl.levelorderIterative();
+	line
+	avl.levelorderRecursive();
 	return 0;
 }
