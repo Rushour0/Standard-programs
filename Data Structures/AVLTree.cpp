@@ -42,52 +42,30 @@ template <class T> class avltree
 	
 	// Refer https://www.programiz.com/dsa/avl-tree for the logical explanation	
 
-	void left_rotate(avltreenode<T> *node)
+	avltreenode<T>* left_rotate(avltreenode<T> *node_x)
 	{
-		avltreenode<T> *someNode;
-		someNode = node->right;
-		someNode->root = node->root; // parent of node is now parent of right of the node
-		if (node->root == nullptr) this->root = someNode;
-		node->root = someNode; // node's root is now the initial node which was it's right
-		node->right = someNode->left; // node's right is now set to left of the right of the node
-		someNode->left = node; // node's right's left is now set to the node
-
+		avltreenode<T> *node_y;
+		parent = node_x->root;
+		node_y = node_x->right;
+		node_x->right = node_y->left;
+		node_y->root = node_x->root;
+		node_y->left = node_x;
+		node_x->root = node_y;
+		if (parent == nullptr) this->root = node_y;
+		return node_y;
 	}
 
-	void right_rotate(avltreenode<T> *node)
+	avltreenode<T>* right_rotate(avltreenode<T> *node_x)
 	{
-		avltreenode<T> *someNode;
-		someNode = node->left;
-		someNode->root = node->root; // parent of node is now parent of left of the node
-		if (node->root == nullptr) this->root = someNode;
-		node->root = someNode; // node's root is now the initial node which was it's left
-		node->left = someNode->left; // node's left is now set to right of the left of the node
-		someNode->right = node; // node's left's right is now set to the node
-
-	}
-
-	void ll_rotate(avltreenode<T> *node)
-	{
-		right_rotate(node);
-	}	
-
-	void rr_rotate(avltreenode<T> *node)
-	{
-		left_rotate(node);
-	}
-
-	void lr_rotate(avltreenode<T> *node)
-	{
-		avltreenode<T> *first = node->right;
-		left_rotate(first);
-		right_rotate(node);
-	}
-	
-	void rl_rotate(avltreenode<T> *node)
-	{
-		avltreenode<T> *first = node->left;
-		right_rotate(first);
-		left_rotate(node);
+		avltreenode<T> *node_y;
+		parent = node_x->root;
+		node_y = node_x->left;
+		node_x->left = node_y->right;
+		node_y->root = node_x->root;
+		node_y->right = node_x;
+		node_x->root = node_y;
+		if (parent == nullptr) this->root = node_y;
+		return node_y;
 	}
 
 	// Check for rotations
@@ -95,49 +73,57 @@ template <class T> class avltree
 	void recentlyInserted(avltreenode<T> *node)
 	{
 		stack<avltreenode<T>*> nodeStack;
-		cout<<balancefactor(node)<<" ";
-		nodeStack.push(node);
-		while (node != this->root)
+
+		while (node != nullptr)
 		{
-			node = node->root;
-			nodeStack.push(node);
-			cout<<balancefactor(node)<<" ";
+
 			if (abs(balancefactor(node)) == 2)
 			{
 				temp = node;
-				nodeStack.pop();
 				if (temp->right != nullptr && temp->right == nodeStack.top())
 				{
 					nodeStack.pop();
 					if (temp->right->right != nullptr && temp->right->right == nodeStack.top())
 					{
-						rr_rotate(temp);
+						cout<<temp->data<<" "<<temp->right->data<<" "<<temp->right->right->data<<" rr"<<endl;
+						if (temp->root != nullptr && temp->root->right == temp) temp->root->right = left_rotate(temp);
+						else if (temp->root != nullptr && temp->root->left == temp) temp->root->left = left_rotate(temp);
+						else left_rotate(temp);
 					}
 					else
 					{
-						right_rotate(temp->right);
-						left_rotate(temp);
-						//rl_rotate(temp);
+						cout<<temp->data<<" "<<temp->right->data<<" "<<temp->right->left->data<<" rl"<<endl;
+						temp->right = right_rotate(temp->right);
+						if (temp->root != nullptr && temp->root->right == temp) temp->root->right = left_rotate(temp);
+						else if (temp->root != nullptr && temp->root->left == temp) temp->root->left = left_rotate(temp);
+						else left_rotate(temp);
 					}
 				}
 				else
 				{
-					extra = nodeStack.top();
 					nodeStack.pop();
 					if (temp->left->left != nullptr && temp->left->left == nodeStack.top())
 					{
-						ll_rotate(temp);
+						cout<<temp->data<<" "<<temp->left->data<<" "<<temp->left->left->data<<" ll"<<endl;
+						if (temp->root != nullptr && temp->root->right == temp) temp->root->right = right_rotate(temp);
+						else if (temp->root != nullptr && temp->root->left == temp) temp->root->left = right_rotate(temp);
+						else right_rotate(temp);
 					}
 					else
 					{
-						left_rotate(temp->left);
-						right_rotate(temp);
+						cout<<temp->data<<" "<<temp->left->data<<" "<<temp->left->right->data<<" lr"<<endl;
+						temp->left = left_rotate(temp->left);
+						if (temp->root != nullptr && temp->root->right == temp) temp->root->right = right_rotate(temp);
+						else if (temp->root != nullptr && temp->root->left == temp) temp->root->left = right_rotate(temp);
+						else right_rotate(temp);
 					}
 				}
 				break;
 			}
+			nodeStack.push(node);
+			node = node->root;
 		}
-		cout<<endl;
+		//cout<<endl;
 	}
 
 	public:
@@ -273,7 +259,7 @@ template <class T> class avltree
 		{
 			if (temp->data < value) temp = temp->right;
 			else if (temp->data > value) temp = temp->left;
-			else return temp;
+			else if (temp->data == value) return temp;
 		}
 		return extra;
 	}
@@ -298,11 +284,47 @@ template <class T> class avltree
 		}
 		return false;
 	}
+
 	// Delete methods - by data and node
 	void del(T value)
 	{
 		temp = this->root;
 		
+		if (value == this->root->data)
+		{
+			if (temp->left != nullptr)
+			{
+				this->root = temp->left;
+				temp->left->root = temp->root;
+				if (temp->right != nullptr)
+				{
+					extra = temp->left;
+					while(extra->right != nullptr) extra = extra->right;
+					temp->right->root = extra;
+					extra->right = temp->right;
+				}
+			}
+			else if(temp->right != nullptr)
+			{
+				this->root = temp->right;
+				temp->right->root = temp->root;
+			}
+			else this->root = nullptr;
+			return;
+		}
+
+		if (temp == NULL)
+		{
+			cout<<"\nNo values in the Binary Tree\n";
+			return;
+		}
+		
+		if (temp == NULL)
+		{
+			cout<<"\nNo values in the Binary Tree\n";
+			return;
+		}
+
 		if (temp == NULL)
 		{
 			cout<<"\nNo values in the Binary Tree\n";
@@ -361,12 +383,48 @@ template <class T> class avltree
 				break;
 			}
 		}
+		recentlyInserted(temp);
 	}
 
 	void delNode(avltreenode<T> *node)
 	{
+		avltreenode<T> *store;
 		if (node == NULL) cout<<"NULL VALUE IS ASKED TO BE DELETED"<<endl;
 		temp = this->root;
+		
+		// deleting the root
+		if (node->data == this->root->data)
+		{
+			if (temp->left != nullptr)
+			{
+				this->root = temp->left;
+				temp->left->root = temp->root;
+				if (temp->right != nullptr)
+				{
+					extra = temp->left;
+					while(extra->right != nullptr) extra = extra->right;
+					temp->right->root = extra;
+					extra->right = temp->right;
+				}
+			}
+			else if(temp->right != nullptr)
+			{
+				this->root = temp->right;
+				temp->right->root = temp->root;
+			}
+			else this->root = nullptr;
+
+			if (this->root != nullptr)
+			{
+				recentlyInserted(this->root);
+			}
+			return;
+		}
+		if (temp == NULL)
+		{
+			cout<<"\nNo values in the Binary Tree\n";
+			return;
+		}
 		
 		if (temp == NULL)
 		{
@@ -374,58 +432,57 @@ template <class T> class avltree
 			return;
 		}
 
-		while(temp!=NULL)
+		if (temp == NULL)
 		{
-			if (temp->data < node->data) temp = temp->right;
-			else if (temp->data > node->data) temp = temp->left;
-			else if (temp->data == node->data)
-			{
-				if (temp->root->left == temp)
-				{	
-					if (temp->left != nullptr)
-					{
-						temp->root->left = temp->left;
-						temp->left->root = temp->root;
-						if (temp->right != nullptr)
-						{
-							extra = temp->left;
-							while(extra->right != nullptr) extra = extra->right;
-							temp->right->root = extra;
-							extra->right = temp->right;
-						}
-					}
-					else if(temp->right != nullptr)
-					{
-						temp->root->left = temp->right;
-						temp->right->root = temp->root;
-					}
-					else temp->root->left = nullptr;
-				}
-
-				else if (temp->root->right == temp)
-				{	
-					if (temp->left != nullptr)
-					{
-						temp->root->right = temp->left;
-						temp->left->root = temp->root;
-						if (temp->right != nullptr)
-						{
-							extra = temp->left;
-							while(extra->right != nullptr) extra = extra->right;
-							temp->right->root = extra;
-							extra->right = temp->right;
-						}
-					}
-					else if(temp->right != nullptr)
-					{
-						temp->root->right = temp->right;
-						temp->right->root = temp->root;
-					}
-					else temp->root->right = nullptr;
-				}
-				break;
-			}
+			cout<<"\nNo values in the Binary Tree\n";
+			return;
 		}
+
+		temp = node;
+		if (temp->root->left == temp)
+		{	
+			if (temp->left != nullptr)
+			{
+				temp->root->left = temp->left;
+				temp->left->root = temp->root;
+				if (temp->right != nullptr)
+				{
+					extra = temp->left;
+					while(extra->right != nullptr) extra = extra->right;
+					temp->right->root = extra;
+					extra->right = temp->right;
+				}
+			}
+			else if(temp->right != nullptr)
+			{
+				temp->root->left = temp->right;
+				temp->right->root = temp->root;
+			}
+			else temp->root->left = nullptr;
+		}
+
+		else if (temp->root->right == temp)
+		{	
+			if (temp->left != nullptr)
+			{
+				temp->root->right = temp->left;
+				temp->left->root = temp->root;
+				if (temp->right != nullptr)
+				{
+					extra = temp->left;
+					while(extra->right != nullptr) extra = extra->right;
+					temp->right->root = extra;
+					extra->right = temp->right;
+				}
+			}
+			else if(temp->right != nullptr)
+			{
+				temp->root->right = temp->right;
+				temp->right->root = temp->root;
+			}
+			else temp->root->right = nullptr;
+		}
+		return;
 	}
 
 	// Traversal methods
@@ -590,12 +647,12 @@ template <class T> class avltree
 int main()
 {
 	avltreenode<int> *temp;
-	vector<int> vec = {1,4,-1,-2,-32,3,5,67,2,57,38};
+	vector<int> vec = {33,53,13,61,9,8,11,21};
 	avltree<int> avl;
 	for(int& it:vec) avl.insert(it);
-	temp = avl.findNode(-32);
-	avl.delNode(temp);
+
 	cout<<avl.minValue()<<" "<<avl.maxValue()<<endl;
+	cout<<avl.root->data;line
 	avl.inorderIterative();
 	line
 	avl.inorderRecursive();

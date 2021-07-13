@@ -186,6 +186,35 @@ template <class T>class binarysearchtree{
 	{
 		temp = this->root;
 		
+		// Delete the root case
+		if (node->data == this->root->data)
+		{
+			if (temp->left != nullptr)
+			{
+				this->root = temp->left;
+				temp->left->root = temp->root;
+				if (temp->right != nullptr)
+				{
+					extra = temp->left;
+					while(extra->right != nullptr) extra = extra->right;
+					temp->right->root = extra;
+					extra->right = temp->right;
+				}
+			}
+			else if(temp->right != nullptr)
+			{
+				this->root = temp->right;
+				temp->right->root = temp->root;
+			}
+			else this->root = nullptr;
+			return;
+		}
+		if (temp == NULL)
+		{
+			cout<<"\nNo values in the Binary Tree\n";
+			return;
+		}
+
 		if (temp == NULL)
 		{
 			cout<<"\nNo values in the Binary Tree\n";
@@ -251,64 +280,81 @@ template <class T>class binarysearchtree{
 		if (node == NULL) cout<<"NULL VALUE IS ASKED TO BE DELETED"<<endl;
 		temp = this->root;
 		
+		// Delete the root case
+		if (node->data == this->root->data)
+		{
+			if (temp->left != nullptr)
+			{
+				this->root = temp->left;
+				temp->left->root = temp->root;
+				if (temp->right != nullptr)
+				{
+					extra = temp->left;
+					while(extra->right != nullptr) extra = extra->right;
+					temp->right->root = extra;
+					extra->right = temp->right;
+				}
+			}
+			else if(temp->right != nullptr)
+			{
+				this->root = temp->right;
+				temp->right->root = temp->root;
+			}
+			else this->root = nullptr;
+			return;
+		}
 		if (temp == NULL)
 		{
 			cout<<"\nNo values in the Binary Tree\n";
 			return;
 		}
 
-		while(temp!=NULL)
-		{
-			if (temp->data < node->data) temp = temp->right;
-			else if (temp->data > node->data) temp = temp->left;
-			else if (temp->data == node->data)
+		// set temp to node's value (pointer)
+		temp = node;
+		if (temp->root->left == temp)
+		{	
+			if (temp->left != nullptr)
 			{
-				if (temp->root->left == temp)
-				{	
-					if (temp->left != nullptr)
-					{
-						temp->root->left = temp->left;
-						temp->left->root = temp->root;
-						if (temp->right != nullptr)
-						{
-							extra = temp->left;
-							while(extra->right != nullptr) extra = extra->right;
-							temp->right->root = extra;
-							extra->right = temp->right;
-						}
-					}
-					else if(temp->right != nullptr)
-					{
-						temp->root->left = temp->right;
-						temp->right->root = temp->root;
-					}
-					else temp->root->left = nullptr;
+				temp->root->left = temp->left;
+				temp->left->root = temp->root;
+				if (temp->right != nullptr)
+				{
+					extra = temp->left;
+					while(extra->right != nullptr) extra = extra->right;
+					temp->right->root = extra;
+					extra->right = temp->right;
 				}
-
-				else if (temp->root->right == temp)
-				{	
-					if (temp->left != nullptr)
-					{
-						temp->root->right = temp->left;
-						temp->left->root = temp->root;
-						if (temp->right != nullptr)
-						{
-							extra = temp->left;
-							while(extra->right != nullptr) extra = extra->right;
-							temp->right->root = extra;
-							extra->right = temp->right;
-						}
-					}
-					else if(temp->right != nullptr)
-					{
-						temp->root->right = temp->right;
-						temp->right->root = temp->root;
-					}
-					else temp->root->right = nullptr;
-				}
-				break;
 			}
+			else if(temp->right != nullptr)
+			{
+				temp->root->left = temp->right;
+				temp->right->root = temp->root;
+			}
+			else temp->root->left = nullptr;
 		}
+
+		else if (temp->root->right == temp)
+		{	
+			if (temp->left != nullptr)
+			{
+				temp->root->right = temp->left;
+				temp->left->root = temp->root;
+				if (temp->right != nullptr)
+				{
+					extra = temp->left;
+					while(extra->right != nullptr) extra = extra->right;
+					temp->right->root = extra;
+					extra->right = temp->right;
+				}
+			}
+			else if(temp->right != nullptr)
+			{
+				temp->root->right = temp->right;
+				temp->right->root = temp->root;
+			}
+			else temp->root->right = nullptr;
+		}
+		return;
 	}
 
 	// Traversal methods
@@ -473,10 +519,10 @@ template <class T>class binarysearchtree{
 int main()
 {
 	binarysearchtreenode<int> *temp;
-	vector<int> vec = {1,4,-1,-2,-32,3,5,67,2,57,38};
+	vector<int> vec = {2,1,3};
 	binarysearchtree<int> bst;
 	for(int& it:vec) bst.insert(it);
-	temp = bst.findNode(-32);
+	temp = bst.findNode(2);
 	bst.delNode(temp);
 	cout<<bst.min()<<" "<<bst.max()<<endl;
 	bst.inorderIterative();
