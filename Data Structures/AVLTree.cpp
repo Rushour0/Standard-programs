@@ -118,7 +118,8 @@ template <class T> class avltree
 						else right_rotate(temp);
 					}
 				}
-				break;
+				cout<<"done"<<endl;
+				return;
 			}
 			nodeStack.push(node);
 			node = node->root;
@@ -244,7 +245,7 @@ template <class T> class avltree
 	}
 
 	// Find node according to data, return null if none found
-	avltreenode<T>* findNode(T value)
+	binarysearchtreenode<T>* findNode(T value)
 	{
 		temp = this->root;
 		extra = nullptr;
@@ -259,7 +260,7 @@ template <class T> class avltree
 		{
 			if (temp->data < value) temp = temp->right;
 			else if (temp->data > value) temp = temp->left;
-			else if (temp->data == value) return temp;
+			else return temp;
 		}
 		return extra;
 	}
@@ -284,12 +285,12 @@ template <class T> class avltree
 		}
 		return false;
 	}
-
 	// Delete methods - by data and node
 	void del(T value)
 	{
 		temp = this->root;
 		
+		// Delete the root case
 		if (value == this->root->data)
 		{
 			if (temp->left != nullptr)
@@ -312,13 +313,6 @@ template <class T> class avltree
 			else this->root = nullptr;
 			return;
 		}
-
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return;
-		}
-		
 		if (temp == NULL)
 		{
 			cout<<"\nNo values in the Binary Tree\n";
@@ -383,16 +377,14 @@ template <class T> class avltree
 				break;
 			}
 		}
-		recentlyInserted(temp);
 	}
 
-	void delNode(avltreenode<T> *node)
+	void delNode(binarysearchtreenode<T> *node)
 	{
-		avltreenode<T> *store;
 		if (node == NULL) cout<<"NULL VALUE IS ASKED TO BE DELETED"<<endl;
 		temp = this->root;
 		
-		// deleting the root
+		// Delete the root case
 		if (node->data == this->root->data)
 		{
 			if (temp->left != nullptr)
@@ -413,16 +405,6 @@ template <class T> class avltree
 				temp->right->root = temp->root;
 			}
 			else this->root = nullptr;
-
-			if (this->root != nullptr)
-			{
-				recentlyInserted(this->root);
-			}
-			return;
-		}
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
 			return;
 		}
 		
@@ -432,12 +414,7 @@ template <class T> class avltree
 			return;
 		}
 
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return;
-		}
-
+		// set temp to node's value (pointer)
 		temp = node;
 		if (temp->root->left == temp)
 		{	
@@ -484,6 +461,7 @@ template <class T> class avltree
 		}
 		return;
 	}
+
 
 	// Traversal methods
 
@@ -650,16 +628,19 @@ int main()
 	vector<int> vec = {33,53,13,61,9,8,11,21};
 	avltree<int> avl;
 	for(int& it:vec) avl.insert(it);
-
+	temp = avl.findNode(13);
+	avl.delNode(temp);
 	cout<<avl.minValue()<<" "<<avl.maxValue()<<endl;
 	cout<<avl.root->data;line
+	cout<<(avl.findNode(21))->right->data;line
 	avl.inorderIterative();
 	line
+	/*
 	avl.inorderRecursive();
 	line
 	avl.preorderIterative();
 	line
-	avl.preorderRecursive();
+	cout<<"preorder : ";avl.preorderRecursive();
 	line
 	avl.postorderIterative();
 	line
@@ -667,6 +648,6 @@ int main()
 	line
 	avl.levelorderIterative();
 	line
-	avl.levelorderRecursive();
+	avl.levelorderRecursive();*/
 	return 0;
 }

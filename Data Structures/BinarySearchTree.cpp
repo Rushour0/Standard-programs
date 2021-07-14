@@ -187,7 +187,7 @@ template <class T>class binarysearchtree{
 		temp = this->root;
 		
 		// Delete the root case
-		if (node->data == this->root->data)
+		if (value == this->root->data)
 		{
 			if (temp->left != nullptr)
 			{
@@ -303,6 +303,7 @@ template <class T>class binarysearchtree{
 			else this->root = nullptr;
 			return;
 		}
+		
 		if (temp == NULL)
 		{
 			cout<<"\nNo values in the Binary Tree\n";
@@ -519,10 +520,10 @@ template <class T>class binarysearchtree{
 int main()
 {
 	binarysearchtreenode<int> *temp;
-	vector<int> vec = {2,1,3};
+	vector<int> vec = {33,53,13,61,9,8,11,21};
 	binarysearchtree<int> bst;
 	for(int& it:vec) bst.insert(it);
-	temp = bst.findNode(2);
+	temp = bst.findNode(13);
 	bst.delNode(temp);
 	cout<<bst.min()<<" "<<bst.max()<<endl;
 	bst.inorderIterative();
