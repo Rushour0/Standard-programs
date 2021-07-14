@@ -244,8 +244,34 @@ template <class T> class avltree
 		return temp->data;
 	}
 
+	// Find min or max node in the given subtree 
+	avltreenode<T>* minNode(avltreenode<T> *node)
+	{
+		temp = node;
+		if (temp == NULL)
+		{
+			cout<<"\nNo values in the Binary Tree\n";
+			return nullptr;
+		}
+		while (temp->left!=NULL) temp = temp->left;
+		return temp;
+	}
+
+	avltreenode<T>* maxNode(avltreenode<T> *node)
+	{
+		temp = node;
+
+		if (temp == NULL)
+		{
+			cout<<"\nNo values in the Binary Tree\n";
+			return nullptr;
+		}
+		while (temp->right!=NULL) temp = temp->right;
+		return temp;
+	}
+
 	// Find node according to data, return null if none found
-	binarysearchtreenode<T>* findNode(T value)
+	avltreenode<T>* findNode(T value)
 	{
 		temp = this->root;
 		extra = nullptr;
@@ -311,11 +337,7 @@ template <class T> class avltree
 				temp->right->root = temp->root;
 			}
 			else this->root = nullptr;
-			return;
-		}
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
+			recentlyInserted(this->root);
 			return;
 		}
 
@@ -325,61 +347,27 @@ template <class T> class avltree
 			return;
 		}
 
+		avltreenode<T> *checkNode;
 		while(temp!=NULL)
 		{
 			if (temp->data < value) temp = temp->right;
 			else if (temp->data > value) temp = temp->left;
 			else if (temp->data == value)
 			{
-				if (temp->root->left == temp)
-				{	
-					if (temp->left != nullptr)
-					{
-						temp->root->left = temp->left;
-						temp->left->root = temp->root;
-						if (temp->right != nullptr)
-						{
-							extra = temp->left;
-							while(extra->right != nullptr) extra = extra->right;
-							temp->right->root = extra;
-							extra->right = temp->right;
-						}
-					}
-					else if(temp->right != nullptr)
-					{
-						temp->root->left = temp->right;
-						temp->right->root = temp->root;
-					}
-					else temp->root->left = nullptr;
-				}
+				if (temp->right != nullptr)
+				{
+					extra = minNode(temp->right);
+					checkNode = extra->root;
+					if (temp->root->left == temp) temp->root->left = extra;
 
-				else if (temp->root->right == temp)
-				{	
-					if (temp->left != nullptr)
-					{
-						temp->root->right = temp->left;
-						temp->left->root = temp->root;
-						if (temp->right != nullptr)
-						{
-							extra = temp->left;
-							while(extra->right != nullptr) extra = extra->right;
-							temp->right->root = extra;
-							extra->right = temp->right;
-						}
-					}
-					else if(temp->right != nullptr)
-					{
-						temp->root->right = temp->right;
-						temp->right->root = temp->root;
-					}
-					else temp->root->right = nullptr;
+					extra->root = temp->root;
+
 				}
-				break;
 			}
 		}
 	}
 
-	void delNode(binarysearchtreenode<T> *node)
+	void delNode(avltreenode<T> *node)
 	{
 		if (node == NULL) cout<<"NULL VALUE IS ASKED TO BE DELETED"<<endl;
 		temp = this->root;

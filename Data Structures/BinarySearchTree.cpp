@@ -140,6 +140,32 @@ template <class T>class binarysearchtree{
 		return temp->data;
 	}
 
+	// Find min or max node in the given subtree 
+	binarysearchtreenode<T>* minNode(binarysearchtreenode<T> *node)
+	{
+		temp = node;
+		if (temp == NULL)
+		{
+			cout<<"\nNo values in the Binary Tree\n";
+			return nullptr;
+		}
+		while (temp->left!=NULL) temp = temp->left;
+		return temp;
+	}
+
+	binarysearchtreenode<T>* maxNode(binarysearchtreenode<T> *node)
+	{
+		temp = node;
+
+		if (temp == NULL)
+		{
+			cout<<"\nNo values in the Binary Tree\n";
+			return nullptr;
+		}
+		while (temp->right!=NULL) temp = temp->right;
+		return temp;
+	}
+
 	// Find node according to data, return null if none found
 	binarysearchtreenode<T>* findNode(T value)
 	{
