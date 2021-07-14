@@ -212,6 +212,12 @@ template <class T>class binarysearchtree{
 	{
 		temp = this->root;
 		
+		if (temp == NULL)
+		{
+			cout<<"\nNo values in the Binary Tree\n";
+			return;
+		}
+
 		// Delete the root case
 		if (value == this->root->data)
 		{
@@ -235,12 +241,7 @@ template <class T>class binarysearchtree{
 			else this->root = nullptr;
 			return;
 		}
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return;
-		}
-
+		
 		while(temp!=NULL)
 		{
 			if (temp->data < value) temp = temp->right;

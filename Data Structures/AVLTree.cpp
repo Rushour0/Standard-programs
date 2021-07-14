@@ -319,6 +319,13 @@ template <class T> class avltree
 	{
 		temp = this->root;
 		
+
+		if (temp == NULL)
+		{
+			cout<<"\nNo values in the Binary Tree\n";
+			return;
+		}
+
 		// Delete the root case
 		if (value == this->root->data)
 		{
@@ -344,12 +351,6 @@ template <class T> class avltree
 			return;
 		}
 
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return;
-		}
-
 		avltreenode<T> *checkNode;
 		while(temp!=NULL)
 		{
@@ -366,7 +367,6 @@ template <class T> class avltree
 					else if (temp->root->right == temp) temp->root->right = extra;
 					extra->root = temp->root;
 					if (extra != store) recentlyInserted()
-
 				}
 			}
 		}
