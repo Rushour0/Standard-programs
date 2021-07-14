@@ -241,12 +241,6 @@ template <class T>class binarysearchtree{
 			return;
 		}
 
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return;
-		}
-
 		while(temp!=NULL)
 		{
 			if (temp->data < value) temp = temp->right;

@@ -3,6 +3,9 @@
 #define lli long long int
 using namespace std;
 
+
+// Deletion balancing incomplete
+
 template <class T> class avltreenode
 {
 	public:
@@ -356,11 +359,13 @@ template <class T> class avltree
 			{
 				if (temp->right != nullptr)
 				{
+					avltreenode<T> *store = temp->right;
 					extra = minNode(temp->right);
 					checkNode = extra->root;
 					if (temp->root->left == temp) temp->root->left = extra;
-
+					else if (temp->root->right == temp) temp->root->right = extra;
 					extra->root = temp->root;
+					if (extra != store) recentlyInserted()
 
 				}
 			}
