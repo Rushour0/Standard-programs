@@ -14,10 +14,9 @@ using namespace std;
 typedef vector<ll> vll;
 typedef vector<int> vi;
 
-
 int main()
 {
 	fastio();
-
+	
 	return 0;
 }
