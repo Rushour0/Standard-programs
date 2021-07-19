@@ -314,10 +314,72 @@ template <class T> class avltree
 		}
 		return false;
 	}
+
 	// Delete methods - by data and node
 	void delNode(avltreenode<T> *node)
 	{
-		
+		if (node->right != nullptr)	
+		{
+			temp = minNode(node->right);
+			cout<<"Found Min "<<temp->data<<endl;
+			node->data = temp->data;
+			extra = temp->root;
+			delNode(temp);
+			recentlyInserted(extra);
+		}
+		else if (node->left != nullptr)
+		{
+			cout<<"It's the left subtree\n";
+			if (node->root->left == node) node->root->left = node->left;
+			else node->root->right = node->left;
+			node->left->root = node->root;
+			extra = node->left;
+			free(node);
+			recentlyInserted(extra);
+		}
+		else
+		{
+			cout<<"I have no subtrees\n";
+			if (node->root->left == node) node->root->left = nullptr;
+			else node->root->right = nullptr;
+			extra = node->root;
+			recentlyInserted(extra);
+			free(node);
+		}
+	}
+
+		// Delete methods - by data and node
+	void del(T value)
+	{
+		avltreenode<T> *node = findNode(value);
+		if (node->right != nullptr)	
+		{
+			temp = minNode(node->right);
+			//cout<<"Found Min "<<temp->data<<endl;
+			node->data = temp->data;
+			extra = temp->root;
+			delNode(temp);
+			recentlyInserted(extra);
+		}
+		else if (node->left != nullptr)
+		{
+			//cout<<"It's the left subtree\n";
+			if (node->root->left == node) node->root->left = node->left;
+			else node->root->right = node->left;
+			node->left->root = node->root;
+			extra = node->left;
+			free(node);
+			recentlyInserted(extra);
+		}
+		else
+		{
+			//cout<<"I have no subtrees\n";
+			if (node->root->left == node) node->root->left = nullptr;
+			else node->root->right = nullptr;
+			extra = node->root;
+			recentlyInserted(extra);
+			free(node);
+		}
 	}
 
 	// Traversal methods
@@ -488,23 +550,20 @@ int main()
 	temp = avl.findNode(13);
 	avl.delNode(temp);
 	cout<<avl.minValue()<<" "<<avl.maxValue()<<endl;
-	cout<<avl.root->data;line
-	cout<<(avl.findNode(21))->right->data;line
 	avl.inorderIterative();
 	line
-	/*
-	avl.inorderRecursive();
-	line
+	//avl.inorderRecursive();
+	//line
 	avl.preorderIterative();
 	line
-	cout<<"preorder : ";avl.preorderRecursive();
-	line
+	//avl.preorderRecursive();
+	//line
 	avl.postorderIterative();
 	line
-	avl.postorderRecursive();
-	line
+	//avl.postorderRecursive();
+	//line
 	avl.levelorderIterative();
 	line
-	avl.levelorderRecursive();*/
+	//avl.levelorderRecursive();
 	return 0;
 }
