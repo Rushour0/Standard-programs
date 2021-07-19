@@ -1,16 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Declaration of Singly Linked List Node Class
+
 template <class T> class singlylinkedlistnode{
     public:
-    T data;
-    singlylinkedlistnode<T> *next;
+    T data;                        // Data stored in the node
+    singlylinkedlistnode<T> *next; // To specify the next node in line of this current node
+
+    // Initialize to a null value
+
     singlylinkedlistnode()
     {
-        this->data = nullptr;
+        this->data = NULL;
         this->next = nullptr;
     }
     
+    // Initialize the node to some value
+
     singlylinkedlistnode(T node_data)
     {
         this->data = node_data;
@@ -18,31 +25,46 @@ template <class T> class singlylinkedlistnode{
     }
 };
 
+// Declaration of Singly Linked List Class
+
 template <class T> class singlylinkedlist{
 
     private:
+
+    // extra private variables required to perform operations on the linked list
+
     singlylinkedlistnode<T> *temp,*extra;
     unsigned long long int length = 0;
     
     public:
+
+    // head and tail of the Singly Linked List
+
     singlylinkedlistnode<T> *head,*tail;
 
+    // Default Constructor sets head and tail to nullptr
     singlylinkedlist()
     {
         this->head = nullptr;
         this->tail = nullptr;
     }
     
+    // Constructor to initialize the linked list with a value
+
     singlylinkedlist(T node_data)
     {
         this->head = node_data;
         this->tail = node_data;
     }
     
+    // Returns size of the linked list (number of nodes in the list)
+
     unsigned long long int size()
     {
     	return length;
     }
+
+    // Push data to the tail of the list
 
     void push(T data)
     {
@@ -55,6 +77,8 @@ template <class T> class singlylinkedlist{
         
         length++;
     }
+
+    // Insert given data at a certain position in the linked list
 
     void insert(unsigned long long int position,T data)
     {
@@ -96,6 +120,8 @@ template <class T> class singlylinkedlist{
         length++;
     }
 
+    // Pop the last element in the list
+
     void pop()
     {
     	temp = this->head;
@@ -110,20 +136,25 @@ template <class T> class singlylinkedlist{
     	{
     		this->head = nullptr;
     		this->tail = nullptr;
+            free(temp);
     	}
     	
     	while(true)
     	{
     		if (temp->next == this->tail)
     		{
+                extra = temp->next;
     			this->tail = temp;
     			temp->next = nullptr;
+                free(extra);
     			break;
     		}
     		temp = temp->next;
     	}
     	length--;
     }
+
+    // Pop the node at a certain position (Delete operation)
 
     void pop(unsigned long long int position)
     {
@@ -162,6 +193,8 @@ template <class T> class singlylinkedlist{
     	}
     	length--;
     }
+
+    // Using the [] operator to access elements/nodes in the Linked List according to their position
 
     T& operator[](unsigned long long int position)
     {

@@ -7,8 +7,8 @@ using namespace std;
 template <class T> class avltreenode
 {
 	public:
-	avltreenode<T> *right,*left,*root;
-	T data;
+	T data;							   // Data to be given to the node	
+	avltreenode<T> *right,*left,*root; // Keeping track of Root, Left node, Right node of the current node
 
 	avltreenode(T node_data)
 	{

@@ -2,10 +2,15 @@
 #define line cout<<endl;
 using namespace std;
 
+// Declaration of Binary Search Tree Node Class
+
 template <class T> class binarysearchtreenode{
 	public:
-	T data;
-	binarysearchtreenode<T> *root,*left,*right;
+	T data;										// Data to be given to the node
+	binarysearchtreenode<T> *root,*left,*right; // Keeping track of Root, Left node, Right node of the current node
+	
+	// Default Null Constructor for BST node
+	
 	binarysearchtreenode()
 	{
 		this->data = nullptr;
@@ -14,6 +19,8 @@ template <class T> class binarysearchtreenode{
 		this->root = nullptr;
 	}
 	
+	// Initialize the node to some value
+
 	binarysearchtreenode(T node_data)
 	{
 		this->data = node_data;
@@ -23,20 +30,27 @@ template <class T> class binarysearchtreenode{
 	}
 };
 
+// Declaration of Binary Search Tree Class
+
 template <class T>class binarysearchtree{
 	private:
+
+	// Extra variables to perform operations on the binary search tree
+
 	binarysearchtreenode<T> *temp,*extra;
 
 	public:
 	binarysearchtreenode<T> *root;
 	
 	// binarysearchtree constructor
+
 	binarysearchtree()
 	{
 		this->root = nullptr;
 	}
 
-	// insert node in binary tree
+	// Insert node in binary tree
+
 	void insertNode(binarysearchtreenode<T> *node)
 	{
 		if (this->root == nullptr)
@@ -74,7 +88,8 @@ template <class T>class binarysearchtree{
 		return ;
 	}
 
-	// insert value in binary tree
+	// Insert value in binary tree
+
 	binarysearchtreenode<T>* insert(T data)
 	{
 		temp = new binarysearchtreenode<T>(data);
@@ -114,6 +129,7 @@ template <class T>class binarysearchtree{
 	}
 
 	// Find min or max in the binary tree
+
 	T min()
 	{
 		temp = this->root;
@@ -140,7 +156,8 @@ template <class T>class binarysearchtree{
 		return temp->data;
 	}
 
-	// Find min or max node in the given subtree 
+	// Find min or max node in the given subtree
+
 	binarysearchtreenode<T>* minNode(binarysearchtreenode<T> *node)
 	{
 		temp = node;
@@ -167,6 +184,7 @@ template <class T>class binarysearchtree{
 	}
 
 	// Find node according to data, return null if none found
+
 	binarysearchtreenode<T>* findNode(T value)
 	{
 		temp = this->root;
@@ -188,6 +206,7 @@ template <class T>class binarysearchtree{
 	}
 	
 	// Verify existence of a value in the tree
+
 	bool find(T value)
 	{
 		temp = this->root;
@@ -207,7 +226,9 @@ template <class T>class binarysearchtree{
 		}
 		return false;
 	}
-	// Delete methods - by data and node
+
+	// Delete method - by node
+
 	void delNode(binarysearchtreenode<T> *node)
 	{
 		if (node->right != nullptr)	
@@ -240,7 +261,8 @@ template <class T>class binarysearchtree{
 		}
 	}
 
-		// Delete methods - by data and node
+	// Delete method - by data
+
 	void del(T value)
 	{
 		binarysearchtreenode<T> *node = findNode(value);

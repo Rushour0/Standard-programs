@@ -1,16 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Declaration of Doubly Linked List Node Class
+
 template <class T> class doublylinkedlistnode{
     public:
-    T data;
-    doublylinkedlistnode<T> *next,*prev;
+    T data;                              // Data to be given to the node   
+    doublylinkedlistnode<T> *next,*prev; // Keeping track of the previous and next node in the Doubly Linked List
+    
+    // Default Null Constructor for the Doubly Linked List Node
+
     doublylinkedlistnode()
     {
         this->next = nullptr;
         this->prev = nullptr;
     }
     
+    // Initializes Doubly Linked List Node to a given value
+
     doublylinkedlistnode(T node_data)
     {
         this->data = node_data;
@@ -19,14 +26,24 @@ template <class T> class doublylinkedlistnode{
     }
 };
 
+// Declaration of Doubly Linked List Node Class
+
 template <class T> class doublylinkedlist{
 
     private:
+
+    // Extra variables used to perform operations on the doubly linked list
+
     doublylinkedlistnode<T> *temp,*extra;
     unsigned long long int length = 0;
     
     public:
+
+    // Head and tail of the Doubly Linked List
+
     doublylinkedlistnode<T> *head,*tail;
+
+    // Default Null Constructor for the Doubly Linked List
 
     doublylinkedlist()
     {
@@ -34,16 +51,22 @@ template <class T> class doublylinkedlist{
         this->tail = nullptr;
     }
     
+    // Initializes Doubly Linked List to a given value as its head
+
     doublylinkedlist(T node_data)
     {
         this->head = node_data;
         this->tail = node_data;
     }
     
+    // Returns the size of the Doubly Linked list
+
     unsigned long long int size()
     {
     	return length;
     }
+
+    // Push data to the tail of the list
 
     doublylinkedlistnode<T>* push(T data)
     {
@@ -61,6 +84,8 @@ template <class T> class doublylinkedlist{
         length++;
         return temp;
     }
+
+    // Insert given data at a certain position in the linked list
 
     doublylinkedlistnode<T>* insert(unsigned long long int position,T data)
     {
@@ -105,6 +130,7 @@ template <class T> class doublylinkedlist{
         return extra;
     }
 
+    // Pop the last element in the list
     void pop()
     {
     	temp = this->head;
@@ -129,6 +155,8 @@ template <class T> class doublylinkedlist{
         length--;
         
     }
+
+    // Pop the node at a certain position (Delete operation)
 
     void pop(unsigned long long int position)
     {
@@ -175,12 +203,16 @@ template <class T> class doublylinkedlist{
     	length--;
     }
 
+    // Pop a particular node in the linked list
+
     void popNode(doublylinkedlistnode<T> *node)
     {
         node->next->prev = node->prev;
         node->prev->next = node->next;
     }
 
+    // Using the [] operator to access elements/nodes in the Linked List according to their position
+    
     T& operator[](unsigned long long int position)
     {
     	unsigned long long int count = 0;
