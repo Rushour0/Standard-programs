@@ -1,3 +1,5 @@
 # Standard-programs
 
-Data Structures and Basic Standard programs for reference
+- Data Structures
+- Basic Standard programs for reference
+- Basic Sorting Algorithms
