@@ -1,5 +1,8 @@
 import math
 primes = []
+
+# Sieve of eratosthenes
+
 def Sieve(n):
     half = n//2
     nNew = int(math.sqrt(n))
@@ -12,4 +15,5 @@ def Sieve(n):
         if (marked[i] == 0):
             primes.append(2*i+1)
 Sieve(int(input()))
+
 print(*primes)
