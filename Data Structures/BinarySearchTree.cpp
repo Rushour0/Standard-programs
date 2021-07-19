@@ -208,175 +208,70 @@ template <class T>class binarysearchtree{
 		return false;
 	}
 	// Delete methods - by data and node
-	void del(T value)
+	void delNode(binarysearchtreenode<T> *node)
 	{
-		temp = this->root;
-		
-		if (temp == NULL)
+		if (node->right != nullptr)	
 		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return;
+			temp = minNode(node->right);
+			//cout<<"Found Min "<<temp->data<<endl;
+			node->data = temp->data;
+			extra = temp->root;
+			delNode(temp);
+			
 		}
-
-		// Delete the root case
-		if (value == this->root->data)
+		else if (node->left != nullptr)
 		{
-			if (temp->left != nullptr)
-			{
-				this->root = temp->left;
-				temp->left->root = temp->root;
-				if (temp->right != nullptr)
-				{
-					extra = temp->left;
-					while(extra->right != nullptr) extra = extra->right;
-					temp->right->root = extra;
-					extra->right = temp->right;
-				}
-			}
-			else if(temp->right != nullptr)
-			{
-				this->root = temp->right;
-				temp->right->root = temp->root;
-			}
-			else this->root = nullptr;
-			return;
+			//cout<<"It's the left subtree\n";
+			if (node->root->left == node) node->root->left = node->left;
+			else node->root->right = node->left;
+			node->left->root = node->root;
+			extra = node->left;
+			free(node);
+			
 		}
-		
-		while(temp!=NULL)
+		else
 		{
-			if (temp->data < value) temp = temp->right;
-			else if (temp->data > value) temp = temp->left;
-			else if (temp->data == value)
-			{
-				if (temp->root->left == temp)
-				{	
-					if (temp->left != nullptr)
-					{
-						temp->root->left = temp->left;
-						temp->left->root = temp->root;
-						if (temp->right != nullptr)
-						{
-							extra = temp->left;
-							while(extra->right != nullptr) extra = extra->right;
-							temp->right->root = extra;
-							extra->right = temp->right;
-						}
-					}
-					else if(temp->right != nullptr)
-					{
-						temp->root->left = temp->right;
-						temp->right->root = temp->root;
-					}
-					else temp->root->left = nullptr;
-				}
-
-				else if (temp->root->right == temp)
-				{	
-					if (temp->left != nullptr)
-					{
-						temp->root->right = temp->left;
-						temp->left->root = temp->root;
-						if (temp->right != nullptr)
-						{
-							extra = temp->left;
-							while(extra->right != nullptr) extra = extra->right;
-							temp->right->root = extra;
-							extra->right = temp->right;
-						}
-					}
-					else if(temp->right != nullptr)
-					{
-						temp->root->right = temp->right;
-						temp->right->root = temp->root;
-					}
-					else temp->root->right = nullptr;
-				}
-				break;
-			}
+			//cout<<"I have no subtrees\n";
+			if (node->root->left == node) node->root->left = nullptr;
+			else node->root->right = nullptr;
+			extra = node->root;
+			
+			free(node);
 		}
 	}
 
-	void delNode(binarysearchtreenode<T> *node)
+		// Delete methods - by data and node
+	void del(T value)
 	{
-		if (node == NULL) cout<<"NULL VALUE IS ASKED TO BE DELETED"<<endl;
-		temp = this->root;
-		
-		// Delete the root case
-		if (node->data == this->root->data)
+		binarysearchtreenode<T> *node = findNode(value);
+		if (node->right != nullptr)	
 		{
-			if (temp->left != nullptr)
-			{
-				this->root = temp->left;
-				temp->left->root = temp->root;
-				if (temp->right != nullptr)
-				{
-					extra = temp->left;
-					while(extra->right != nullptr) extra = extra->right;
-					temp->right->root = extra;
-					extra->right = temp->right;
-				}
-			}
-			else if(temp->right != nullptr)
-			{
-				this->root = temp->right;
-				temp->right->root = temp->root;
-			}
-			else this->root = nullptr;
-			return;
+			temp = minNode(node->right);
+			//cout<<"Found Min "<<temp->data<<endl;
+			node->data = temp->data;
+			extra = temp->root;
+			delNode(temp);
+			
 		}
-		
-		if (temp == NULL)
+		else if (node->left != nullptr)
 		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return;
+			//cout<<"It's the left subtree\n";
+			if (node->root->left == node) node->root->left = node->left;
+			else node->root->right = node->left;
+			node->left->root = node->root;
+			extra = node->left;
+			free(node);
+			
 		}
-
-		// set temp to node's value (pointer)
-		temp = node;
-		if (temp->root->left == temp)
-		{	
-			if (temp->left != nullptr)
-			{
-				temp->root->left = temp->left;
-				temp->left->root = temp->root;
-				if (temp->right != nullptr)
-				{
-					extra = temp->left;
-					while(extra->right != nullptr) extra = extra->right;
-					temp->right->root = extra;
-					extra->right = temp->right;
-				}
-			}
-			else if(temp->right != nullptr)
-			{
-				temp->root->left = temp->right;
-				temp->right->root = temp->root;
-			}
-			else temp->root->left = nullptr;
+		else
+		{
+			//cout<<"I have no subtrees\n";
+			if (node->root->left == node) node->root->left = nullptr;
+			else node->root->right = nullptr;
+			extra = node->root;
+			
+			free(node);
 		}
-
-		else if (temp->root->right == temp)
-		{	
-			if (temp->left != nullptr)
-			{
-				temp->root->right = temp->left;
-				temp->left->root = temp->root;
-				if (temp->right != nullptr)
-				{
-					extra = temp->left;
-					while(extra->right != nullptr) extra = extra->right;
-					temp->right->root = extra;
-					extra->right = temp->right;
-				}
-			}
-			else if(temp->right != nullptr)
-			{
-				temp->root->right = temp->right;
-				temp->right->root = temp->root;
-			}
-			else temp->root->right = nullptr;
-		}
-		return;
 	}
 
 	// Traversal methods

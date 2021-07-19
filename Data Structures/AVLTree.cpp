@@ -319,7 +319,7 @@ template <class T> class avltree
 		if (node->right != nullptr)	
 		{
 			temp = minNode(node->right);
-			cout<<"Found Min "<<temp->data<<endl;
+			//cout<<"Found Min "<<temp->data<<endl;
 			node->data = temp->data;
 			extra = temp->root;
 			delNode(temp);
@@ -327,7 +327,7 @@ template <class T> class avltree
 		}
 		else if (node->left != nullptr)
 		{
-			cout<<"It's the left subtree\n";
+			//cout<<"It's the left subtree\n";
 			if (node->root->left == node) node->root->left = node->left;
 			else node->root->right = node->left;
 			node->left->root = node->root;
@@ -337,7 +337,7 @@ template <class T> class avltree
 		}
 		else
 		{
-			cout<<"I have no subtrees\n";
+			//cout<<"I have no subtrees\n";
 			if (node->root->left == node) node->root->left = nullptr;
 			else node->root->right = nullptr;
 			extra = node->root;
