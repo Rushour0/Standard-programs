@@ -4,8 +4,6 @@
 using namespace std;
 
 
-// Deletion balancing incomplete
-
 template <class T> class avltreenode
 {
 	public:
