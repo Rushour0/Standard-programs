@@ -1,4 +1,7 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <stack>
 #define line cout<<endl;
 #define lli long long int
 using namespace std;
