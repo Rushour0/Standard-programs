@@ -61,5 +61,14 @@ template <class T> class redblacktree
 
 	public:
 
+	// Root of the tree
+	redblacktreenode<T> *root;
+
+	// redblacktree constructor
+	redblacktree()
+	{
+		this->root = nullptr;
+	}
+
 
 }
