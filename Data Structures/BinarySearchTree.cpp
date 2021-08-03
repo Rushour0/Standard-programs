@@ -88,101 +88,6 @@ template <class T>class binarysearchtree{
 		return ;
 	}
 
-	// Insert value in binary tree
-
-	binarysearchtreenode<T>* insert(T data)
-	{
-		temp = new binarysearchtreenode<T>(data);
-		if (this->root == nullptr)
-		{
-			this->root = temp;
-			return temp;
-		}
-		else
-		{
-			extra = this->root;
-			while(true)
-			{
-				if (extra->data < temp->data)
-				{
-					if (extra->right == nullptr) 
-					{
-						temp->root = extra;
-						extra->right = temp;
-						break;
-					}
-					else extra = extra->right;
-				}
-				else 
-				{
-					if (extra->left == nullptr) 
-					{
-						temp->root = extra;
-						extra->left = temp;
-						break;
-					}
-					else extra = extra->left;
-				}
-			}
-		}
-		return temp;
-	}
-
-	// Find min or max in the binary tree
-
-	T min()
-	{
-		temp = this->root;
-		T *extra = new T();
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return *extra;
-		}
-		while (temp->left!=NULL) temp = temp->left;
-		return temp->data;
-	}
-
-	T max()
-	{
-		temp = this->root;
-		T *extra = new T();
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return *extra;
-		}
-		while (temp->right!=NULL) temp = temp->right;
-		return temp->data;
-	}
-
-	// Find min or max node in the given subtree
-
-	binarysearchtreenode<T>* minNode(binarysearchtreenode<T> *node)
-	{
-		temp = node;
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return nullptr;
-		}
-		while (temp->left!=NULL) temp = temp->left;
-		return temp;
-	}
-
-	binarysearchtreenode<T>* maxNode(binarysearchtreenode<T> *node)
-	{
-		temp = node;
-
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return nullptr;
-		}
-		while (temp->right!=NULL) temp = temp->right;
-		return temp;
-	}
-
 	// Find node according to data, return null if none found
 
 	binarysearchtreenode<T>* findNode(T value)
@@ -204,27 +109,23 @@ template <class T>class binarysearchtree{
 		}
 		return extra;
 	}
-	
-	// Verify existence of a value in the tree
 
-	bool find(T value)
+	// Find min or max node in the given subtree
+
+	binarysearchtreenode<T>* minNode(binarysearchtreenode<T> *node)
 	{
-		temp = this->root;
-		extra = nullptr;
-		
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return false;
-		}
+		temp = node;
+		if (temp == NULL) return nullptr;
+		while (temp->left!=NULL) temp = temp->left;
+		return temp;
+	}
 
-		while(temp!=NULL)
-		{
-			if (temp->data < value) temp = temp->right;
-			else if (temp->data > value) temp = temp->left;
-			else return true;
-		}
-		return false;
+	binarysearchtreenode<T>* maxNode(binarysearchtreenode<T> *node)
+	{
+		temp = node;
+		if (temp == NULL) return nullptr;
+		while (temp->right!=NULL) temp = temp->right;
+		return temp;
 	}
 
 	// Delete method - by node
@@ -261,39 +162,45 @@ template <class T>class binarysearchtree{
 		}
 	}
 
+	// Insert value in binary tree
+
+	binarysearchtreenode<T>* insert(T data)
+	{
+		temp = new binarysearchtreenode<T>(data);
+		insertNode(temp);
+		return temp;
+	}
+
+	
+	// Verify existence of a value in the tree
+
+	bool find(T value)
+	{
+		return findNode(value) != nullptr;
+	}
+
+	// Find min or max in the binary tree
+
+	T min()
+	{
+		temp = this->root;
+		temp = minNode(temp);
+		return temp->data;
+	}
+
+	T max()
+	{
+		temp = this->root;
+		temp = maxNode(temp);
+		return temp->data;
+	}
+
 	// Delete method - by data
 
 	void del(T value)
 	{
 		binarysearchtreenode<T> *node = findNode(value);
-		if (node->right != nullptr)	
-		{
-			temp = minNode(node->right);
-			//cout<<"Found Min "<<temp->data<<endl;
-			node->data = temp->data;
-			extra = temp->root;
-			delNode(temp);
-			
-		}
-		else if (node->left != nullptr)
-		{
-			//cout<<"It's the left subtree\n";
-			if (node->root->left == node) node->root->left = node->left;
-			else node->root->right = node->left;
-			node->left->root = node->root;
-			extra = node->left;
-			free(node);
-			
-		}
-		else
-		{
-			//cout<<"I have no subtrees\n";
-			if (node->root->left == node) node->root->left = nullptr;
-			else node->root->right = nullptr;
-			extra = node->root;
-			
-			free(node);
-		}
+		delNode(node);
 	}
 
 	// Traversal methods

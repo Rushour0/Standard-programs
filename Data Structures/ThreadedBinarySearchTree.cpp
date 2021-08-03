@@ -120,7 +120,7 @@ template <class T>class threadedbinarysearchtree{
 			return extra;
 		}
 
-		while(temp!=NULL)
+		while( temp != NULL )
 		{
 			if (temp->data < value) temp = temp->right;
 			else if (temp->data > value) temp = temp->left;
@@ -188,8 +188,7 @@ template <class T>class threadedbinarysearchtree{
 	threadedbinarysearchtreenode<T>* insert(T data)
 	{
 		temp = new threadedbinarysearchtreenode<T>(data);
-		
-		this->insertNode(temp);
+		insertNode(temp);
 		
 		return temp;
 	}
@@ -198,22 +197,7 @@ template <class T>class threadedbinarysearchtree{
 
 	bool find(T value)
 	{
-		temp = this->root;
-		extra = nullptr;
-		
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the threadedbinary Tree\n";
-			return false;
-		}
-
-		while(temp!=NULL)
-		{
-			if (temp->data < value) temp = temp->right;
-			else if (temp->data > value) temp = temp->left;
-			else return true;
-		}
-		return false;
+		return findNode(value) != nullptr;
 	}
 
 	// Find min or max in the threadedbinary tree
@@ -221,26 +205,14 @@ template <class T>class threadedbinarysearchtree{
 	T min()
 	{
 		temp = this->root;
-		T *extra = new T();
-		if (temp == NULL)	
-		{
-			cout<<"\nNo values in the threadedbinary Tree\n";
-			return *extra;
-		}
-		while (temp->left!=NULL) temp = temp->left;
+		temp = minNode(temp);
 		return temp->data;
 	}
 
 	T max()
 	{
 		temp = this->root;
-		T *extra = new T();
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the threadedbinary Tree\n";
-			return *extra;
-		}
-		while (temp->right!=NULL) temp = temp->right;
+		temp = maxNode(temp);
 		return temp->data;
 	}
 	

@@ -125,7 +125,6 @@ template <class T> class avltree
 			nodeStack.push(node);
 			node = node->root;
 		}
-		//cout<<endl;
 	}
 
 	public:
@@ -177,72 +176,25 @@ template <class T> class avltree
 		return ;
 	}
 
-	// insert value in avl binary tree
-	avltreenode<T>* insert(T data)
-	{
-		temp = new avltreenode<T>(data);
-		if (this->root == nullptr)
-		{
-			this->root = temp;
-			recentlyInserted(temp);
-			return temp;
-		}
-		else
-		{
-			extra = this->root;
-			while(true)
-			{
-				if (extra->data < temp->data)
-				{
-					if (extra->right == nullptr) 
-					{
-						temp->root = extra;
-						extra->right = temp;
-						break;
-					}
-					else extra = extra->right;
-				}
-				else 
-				{
-					if (extra->left == nullptr) 
-					{
-						temp->root = extra;
-						extra->left = temp;
-						break;
-					}
-					else extra = extra->left;
-				}
-			}
-		}
-		recentlyInserted(temp);
-		return temp;
-	}
-
-	// Find min or max in the avl binary tree
-	T minValue()
+	// Find node according to data, return null if none found
+	avltreenode<T>* findNode(T value)
 	{
 		temp = this->root;
-		T *extra = new T();
+		extra = nullptr;
+		
 		if (temp == NULL)
 		{
 			cout<<"\nNo values in the Binary Tree\n";
-			return *extra;
+			return extra;
 		}
-		while (temp->left!=NULL) temp = temp->left;
-		return temp->data;
-	}
 
-	T maxValue()
-	{
-		temp = this->root;
-		T *extra = new T();
-		if (temp == NULL)
+		while(temp!=NULL)
 		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return *extra;
+			if (temp->data < value) temp = temp->right;
+			else if (temp->data > value) temp = temp->left;
+			else return temp;
 		}
-		while (temp->right!=NULL) temp = temp->right;
-		return temp->data;
+		return extra;
 	}
 
 	// Find min or max node in the given subtree 
@@ -271,47 +223,6 @@ template <class T> class avltree
 		return temp;
 	}
 
-	// Find node according to data, return null if none found
-	avltreenode<T>* findNode(T value)
-	{
-		temp = this->root;
-		extra = nullptr;
-		
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return extra;
-		}
-
-		while(temp!=NULL)
-		{
-			if (temp->data < value) temp = temp->right;
-			else if (temp->data > value) temp = temp->left;
-			else return temp;
-		}
-		return extra;
-	}
-	
-	// Verify existence of a value in the tree
-	bool find(T value)
-	{
-		temp = this->root;
-		extra = nullptr;
-		
-		if (temp == NULL)
-		{
-			cout<<"\nNo values in the Binary Tree\n";
-			return false;
-		}
-
-		while(temp!=NULL)
-		{
-			if (temp->data < value) temp = temp->right;
-			else if (temp->data > value) temp = temp->left;
-			else return true;
-		}
-		return false;
-	}
 
 	// Delete methods - by data and node
 	void delNode(avltreenode<T> *node)
@@ -346,38 +257,40 @@ template <class T> class avltree
 		}
 	}
 
-		// Delete methods - by data and node
+	// insert value in avl binary tree
+	avltreenode<T>* insert(T data)
+	{
+		temp = new avltreenode<T>(data);
+		insertNode(temp);
+		return temp;
+	}
+
+	// Verify existence of a value in the tree
+	bool find(T value)
+	{
+		return findNode(value) != nullptr;
+	}
+
+	// Find min or max in the avl binary tree
+	T minValue()
+	{
+		temp = this->root;
+		temp = minNode(temp);
+		return temp->data;
+	}
+
+	T maxValue()
+	{
+		temp = this->root;
+		temp = maxNode(temp);
+		return temp->data;
+	}
+	
+	// Delete methods - by data and node
 	void del(T value)
 	{
 		avltreenode<T> *node = findNode(value);
-		if (node->right != nullptr)	
-		{
-			temp = minNode(node->right);
-			//cout<<"Found Min "<<temp->data<<endl;
-			node->data = temp->data;
-			extra = temp->root;
-			delNode(temp);
-			recentlyInserted(extra);
-		}
-		else if (node->left != nullptr)
-		{
-			//cout<<"It's the left subtree\n";
-			if (node->root->left == node) node->root->left = node->left;
-			else node->root->right = node->left;
-			node->left->root = node->root;
-			extra = node->left;
-			free(node);
-			recentlyInserted(extra);
-		}
-		else
-		{
-			//cout<<"I have no subtrees\n";
-			if (node->root->left == node) node->root->left = nullptr;
-			else node->root->right = nullptr;
-			extra = node->root;
-			recentlyInserted(extra);
-			free(node);
-		}
+		delNode(node);
 	}
 
 	// Traversal methods
