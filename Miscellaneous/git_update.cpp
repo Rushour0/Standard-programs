@@ -16,8 +16,14 @@ int main(int argc,char **argv)
 		cout<< "NO COMMIT MESSAGE";
 		return 1;
 	}
-	for(int i = 1;i<argc;i++) COMMIT_MESSAGE+=' '+argv[i];
+
+	for(int i = 1;i<argc;i++) 
+	{
+		COMMIT_MESSAGE+=argv[i];
+		if (i != argc -1) COMMIT_MESSAGE+=' ';
+	}
 	COMMIT_MESSAGE	+= "\"";
+	cout<<COMMIT_MESSAGE;
 	system("git add .");
 	system(COMMIT_MESSAGE.c_str());
 	system("git push");
