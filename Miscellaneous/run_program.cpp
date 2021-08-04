@@ -97,8 +97,6 @@ int main(int argc, char **argv)
 			cout<<input<<endl; // The final command to be input into the system command
 
 			system(input.c_str()); // Executing the system command ( Converting the string into const char* - default input data format for system)
-
-			system("cls");
 		}
 		else
 		{
