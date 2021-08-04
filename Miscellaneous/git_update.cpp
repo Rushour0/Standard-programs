@@ -23,7 +23,7 @@ int main(int argc,char **argv)
 		if (i != argc -1) COMMIT_MESSAGE+=' ';
 	}
 	COMMIT_MESSAGE	+= "\"";
-	cout<<COMMIT_MESSAGE;
+	cout<<COMMIT_MESSAGE<<endl;
 	system("git add .");
 	system(COMMIT_MESSAGE.c_str());
 	system("git push");
