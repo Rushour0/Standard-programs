@@ -10,6 +10,7 @@ string chartostring(char *a)
 
 int main(int argc,char **argv)
 {
+	system("git pull");
 	string COMMIT_MESSAGE = "git commit -m \"";
 	if (argc == 1)
 	{
