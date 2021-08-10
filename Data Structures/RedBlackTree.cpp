@@ -34,10 +34,10 @@ template <class T> class redblacktree
 	
 	redblacktreenode<T>* left_rotate(redblacktreenode<T> *node_x)
 	{
-		redblacktreenode<T> *node_y;
-		parent = node_x->root;
-		node_y = node_x->right;
-		node_x->right = node_y->left;
+		redblacktreenode<T> *node_y;					// The other node
+		parent = node_x->root;							// Marking parent node of given node
+		node_y = node_x->right;							// node_y is pointing to right of node_x
+		node_x->right = node_y->left;					
 		node_y->root = node_x->root;
 		node_y->left = node_x;
 		node_x->root = node_y;

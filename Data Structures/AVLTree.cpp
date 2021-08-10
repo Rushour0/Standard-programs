@@ -36,7 +36,8 @@ template <class T> class avltree
 			r_height = treeheight(node->right);
 			return max(l_height,r_height)+1;
 		}
-		return 0;
+
+		return 0;									// Return 0 if nullptr
 	}
 
 	lli balancefactor(avltreenode<T> *node)
